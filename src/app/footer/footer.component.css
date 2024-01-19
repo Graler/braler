@@ -1,0 +1,20 @@
+.footer {
+  background-color: #673ab7;
+  color: #fff;
+  padding-left: 2%;
+  padding-right: 2%;
+}
+
+h6 {
+  font-size: 20px;
+  text-align: center;
+}
+
+.display-footer {
+  width: 100%;
+  padding-top: 10px;
+}
+
+.padding-bottom {
+  padding-bottom: 1px;
+}

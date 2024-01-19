@@ -1,0 +1,101 @@
+<div class="spinner-flex" *ngIf="showSpinner == true; else section">
+  <mat-spinner mode="indeterminate"></mat-spinner>
+</div>
+
+<ng-template #section>
+  <section class="main">
+    <div class="padding-body">
+      <h1>Pessoas desaparecidas</h1>
+    </div>
+    <div class="padding-body margin-bottom-5">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>
+            Pesquisa
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-actions class="margin-search">
+          <form class="example-form width-100" [formGroup]="form" (ngSubmit)="search()">
+            <mat-form-field class="example-full-width size-input">
+              <mat-label>Nome</mat-label>
+              <input type="text" matInput formControlName="name" placeholder="Nome">
+            </mat-form-field>
+            <mat-form-field class="example-full-width size-input">
+              <mat-label>Sexo</mat-label>
+              <mat-select matNativeControl formControlName="sex">
+                <mat-option value="">Todos</mat-option>
+                <mat-option value="FEMININO">Feminino</mat-option>
+                <mat-option value="MASCULINO">Masculino</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field class="example-full-width size-input">
+              <mat-label>Idade inicial</mat-label>
+              <input type="number" mask="999" formControlName="ageStart" matInput placeholder="Idade inicial">
+            </mat-form-field>
+            <mat-form-field class="example-full-width size-input">
+              <mat-label>Idade Final</mat-label>
+              <input type="number" mask="999" formControlName="ageEnd" matInput placeholder="Idade Final">
+            </mat-form-field>
+            <div class="button-search">
+              <button mat-raised-button type="submit" color="primary"><mat-icon>search</mat-icon> Pesquisar</button>
+            </div>
+          </form>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+    <ng-container *ngIf="pagePerson.content.length > 0; else empty">
+      <div class="padding-body scroll">
+        <table mat-table [dataSource]="pagePerson.content" class="mat-elevation-z8">
+          <ng-container matColumnDef="image">
+            <th mat-header-cell class="td-align-center border padding-2 th-font" *matHeaderCellDef>Foto</th>
+            <td mat-cell class="td-align-center border padding-right-20" *matCellDef="let element">
+              <ng-content *ngIf="element.urlFoto != null; else img"></ng-content>
+              <img class="image td-image" src="{{element.urlFoto}}" />
+              <ng-template #img>
+                <img src="assets/img/no-image.png" class="image td-image" alt="Foto pessoa">
+              </ng-template>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef class="td-align-center border th-font">Nome</th>
+            <td mat-cell class="td-align-center border" *matCellDef="let element">{{element.nome}}</td>
+          </ng-container>
+          <ng-container matColumnDef="age">
+            <th mat-header-cell class="td-align-center border padding-2 th-font" *matHeaderCellDef>Idade</th>
+            <td mat-cell class="td-align-center border" *matCellDef="let element">{{element.idade}}</td>
+          </ng-container>
+          <ng-container matColumnDef="sex">
+            <th mat-header-cell class="td-align-center border th-font" *matHeaderCellDef>Sexo</th>
+            <td mat-cell class="td-align-center border padding-2" *matCellDef="let element">{{element.sexo}}</td>
+          </ng-container>
+          <ng-container matColumnDef="details">
+            <th mat-header-cell class="td-align-center border th-font" *matHeaderCellDef>Detalhes</th>
+            <td mat-cell class="td-align-center border" *matCellDef="let element"><a class="color-details"
+                [routerLink]="['/pessoas', element.id]" mat-button><mat-icon>visibility</mat-icon> Detalhes</a> </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+      <div class="page">
+        <button mat-mini-fab class="margin-right-2" color="primary" (click)="getFirstPage()"
+          *ngIf="pagePerson.first == false"><mat-icon>keyboard_double_arrow_left</mat-icon></button>
+        <button mat-mini-fab class="margin-right-2" color="primary" (click)="getFirstPage()" *ngIf="page > 1">{{page -
+          1}}</button>
+        <button mat-mini-fab class="margin-right-2 color-button-select">{{page}}</button>
+        <button mat-mini-fab class="margin-right-2" color="primary" *ngIf="page < pagePerson.totalPages"
+          (click)="getNextPage()">{{page + 1}}</button>
+        <button mat-mini-fab color="primary" (click)="getLastPage()"
+          *ngIf="pagePerson.last == false"><mat-icon>keyboard_double_arrow_right</mat-icon></button>
+      </div>
+    </ng-container>
+    <ng-template #empty>
+      <div class="padding-body">
+        <mat-card>
+          <mat-card-content><h4>Não foi encontrada nenhuma pessoa!</h4></mat-card-content>
+        </mat-card>
+      </div>
+    </ng-template>
+  </section>
+</ng-template>

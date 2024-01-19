@@ -1,0 +1,15 @@
+.background-color {
+  background-color: #673ab7;
+}
+
+.img-logo {
+  height: 60px;
+  width: 60px;
+}
+
+.logo {
+  color: #fff;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
