@@ -38,6 +38,10 @@
 }
 
 .sb-icon {
-  color: black !important;
+  color: #673ab7 !important;
   border: 2px solid !important;
+}
+
+.center {
+  justify-content: center;
 }
